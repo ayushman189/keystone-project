@@ -1,0 +1,14 @@
+# Render blueprint for keystone-frontend (React Static Site)
+# Docs: https://render.com/docs/blueprint-spec
+# IMPORTANT: Frontend repo root is ../keystone-frontend
+
+services:
+  - type: web
+    name: keystone-frontend
+    runtime: static
+    plan: free
+    buildCommand: npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        sync: false
