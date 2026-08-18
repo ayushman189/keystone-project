@@ -29,20 +29,30 @@ public class CorsFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) res;
 
         String origin = request.getHeader("Origin");
+        String method = request.getMethod();
         
-        // Check if origin is allowed
+        // Debug logging
+        System.out.println("CORS Filter - Origin: " + origin + ", Method: " + method);
+        System.out.println("CORS Filter - Allowed origins: " + allowedOrigins);
+        
+        // For OPTIONS requests, always allow and set CORS headers
+        if ("OPTIONS".equalsIgnoreCase(method)) {
+            if (origin != null) {
+                // Always set CORS headers for preflight
+                response.setHeader("Access-Control-Allow-Origin", origin);
+                response.setHeader("Access-Control-Allow-Credentials", "true");
+                response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD, PATCH");
+                response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+                response.setHeader("Access-Control-Max-Age", "3600");
+            }
+            response.setStatus(HttpServletResponse.SC_OK);
+            return;
+        }
+        
+        // For actual requests, check if origin is allowed
         if (origin != null && isOriginAllowed(origin)) {
             response.setHeader("Access-Control-Allow-Origin", origin);
             response.setHeader("Access-Control-Allow-Credentials", "true");
-            response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD, PATCH");
-            response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-            response.setHeader("Access-Control-Max-Age", "3600");
-        }
-
-        // Handle preflight requests
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-            response.setStatus(HttpServletResponse.SC_OK);
-            return;
         }
 
         chain.doFilter(req, res);
