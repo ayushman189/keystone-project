@@ -11,4 +11,4 @@ services:
     staticPublishPath: ./dist
     envVars:
       - key: VITE_API_BASE_URL
-        sync: false
+        value: https://keystone-backend-v2.onrender.com/api
