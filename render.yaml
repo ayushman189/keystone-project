@@ -29,7 +29,6 @@ services:
       # Set the URL of the deployed frontend static site (e.g. https://keystone-frontend.onrender.com)
       - key: KEYSTONE_CORS_ORIGINS
         value: https://keystone-frontend-v2.onrender.com
-        sync: false
       # Provide a strong Base64-encoded secret (e.g. `openssl rand -base64 64`)
       - key: KEYSTONE_JWT_SECRET
         sync: false
