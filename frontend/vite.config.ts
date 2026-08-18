@@ -12,4 +12,7 @@ export default defineConfig({
       },
     },
   },
+  preview: {
+    allowedHosts: ['keystone-frontend-v2.onrender.com'],
+  },
 })
