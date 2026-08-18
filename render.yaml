@@ -1,0 +1,37 @@
+# Render blueprint for keystone-backend (Spring Boot Web Service)
+# Docs: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: keystone-backend
+    runtime: java
+    plan: free
+    buildCommand: ./mvnw -DskipTests clean package
+    startCommand: java -jar target/keystone-backend-0.0.1-SNAPSHOT.jar
+    envVars:
+      - key: PORT
+        value: 8080
+      # Set these in the Render dashboard after creating the Render PostgreSQL database:
+      #   KEYSTONE_DB_URL      -> jdbc:postgresql://<host>:<port>/keystone_db
+      #                            (take the Render internal Connection String, e.g.
+      #                             postgres://keystone:xxx@dpg-xxxx-a:<port>/keystone_db
+      #                             and convert to jdbc:postgresql://<host>:<port>/keystone_db)
+      #   KEYSTONE_DB_USERNAME -> the database user (default: keystone)
+      #   KEYSTONE_DB_PASSWORD -> the database password
+      - key: KEYSTONE_DB_URL
+        sync: false
+      - key: KEYSTONE_DB_USERNAME
+        sync: false
+      - key: KEYSTONE_DB_PASSWORD
+        sync: false
+      - key: KEYSTONE_DB_DRIVER
+        value: org.postgresql.Driver
+      # Set the URL of the deployed frontend static site (e.g. https://keystone-frontend.onrender.com)
+      - key: KEYSTONE_CORS_ORIGINS
+        sync: false
+      # Provide a strong Base64-encoded secret (e.g. `openssl rand -base64 64`)
+      - key: KEYSTONE_JWT_SECRET
+        sync: false
+
+# Create the Render PostgreSQL database manually AFTER this web service,
+# then copy its Connection String values into the env vars above.
