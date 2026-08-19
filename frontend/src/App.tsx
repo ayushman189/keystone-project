@@ -87,6 +87,9 @@ function App() {
               {loggingIn ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
+          <p className="server-wakeup-note">
+            Please wait a moment while the server wakes up. The first request may take a little longer than usual.
+          </p>
           {error && <div className="error-banner">{error}</div>}
         </div>
       </div>
